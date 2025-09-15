@@ -6,3 +6,6 @@ Lancer le projet : docker-compose up -d --build Le premier build peut prendre qq
 
 Stopper le projet : docker-compose down
 
+Interface front : http://localhost:5173/
+Back : http://localhost:8000/
+PMA : http://localhost:8081/

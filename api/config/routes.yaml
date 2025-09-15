@@ -6,6 +6,8 @@ controllers:
 test:
     path: /test
     controller: App\Controller\TestController
-auth:
+register:
     path: /register
     controller: App\Controller\AuthController::register
+login:
+    path: /api/login

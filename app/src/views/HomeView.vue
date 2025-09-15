@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="max-w-md mx-auto bg-white p-6 flex justify-center">
+    <h1>Bienvenue</h1>
+  </div>
 </template>

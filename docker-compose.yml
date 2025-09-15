@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: vue-frontend
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: symfony-backend
+    volumes:
+      - ./api:/var/www/html
+    environment:
+      DATABASE_URL: "mysql://symfony:secret@mysql-db:3306/symfony_db?serverVersion=8.0"
+      # ajoute d'autres vars si nécessaire (APP_ENV, JWT_PASSPHRASE, ...)
+    expose:
+      - "9000"           # expose PHP-FPM sur le réseau interne (nginx y accède)
+    restart: unless-stopped
+    depends_on:
+      - mysql-db
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx-proxy
+    ports:
+      - "8000:80"       # accès externe : http://localhost:8000
+    volumes:
+      - ./api:/var/www/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"   # host:3307 -> container:3306 (évite conflit sur 3306)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql-db
+      PMA_USER: symfony
+      PMA_PASSWORD: secret
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql-db
+
+volumes:
+  db_data:
+

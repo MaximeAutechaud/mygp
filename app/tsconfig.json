@@ -1,4 +1,29 @@
 {
+  "compilerOptions": {
+    /* Langage cible */
+    "target": "ESNext",              /* Génère du code moderne */
+    "module": "ESNext",              /* Utilise les modules ES */
+    "moduleResolution": "Node",      /* Résolution façon Node.js */
+
+    /* API disponibles */
+    "lib": ["ESNext", "DOM"],        /* Support Promises, async/await, fetch, etc. */
+
+    /* Vérifications */
+    "strict": true,                  /* Active toutes les vérifications strictes */
+    "isolatedModules": true,         /* Compatible avec Vite/HMR */
+    "skipLibCheck": true,            /* Ignore vérification des .d.ts (plus rapide) */
+
+    /* Import/export */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,       /* Permet importer du JSON */
+
+    /* Paths (optionnel si tu veux des alias @/...) */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
   "files": [],
   "references": [
     {

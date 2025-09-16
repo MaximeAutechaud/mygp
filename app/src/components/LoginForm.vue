@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
+import {useAuth} from '@/composables/useAuth'
+import {useRouter} from 'vue-router'
 
 const form = reactive({
   email: '',
@@ -11,6 +13,9 @@ const serverError = ref<string | null>(null)
 const emit = defineEmits<{
   (e: 'login', payload: any): void
 }>()
+const {login} = useAuth()
+const router = useRouter()
+
 function validate(): boolean {
   errors.email = undefined
   errors.password = undefined
@@ -31,21 +36,12 @@ function validate(): boolean {
 }
 
 /** Submit */
-async function submit() {
-  if (!validate()) return
-
+const onSubmit = async () => {
   try {
-    const payload = {
-      headers: {
-        'content-type': 'application/json',
-      },
-      email: form.email,
-      password: form.password
-    }
-    console.log(payload)
-    const res = await axios.post("http://localhost:8000/api/login", payload)
+    await login(form.email, form.password)
+    router.push('/contact')
     // Expectation: API returns created user or token (adapt as needed)
-    emit('login', res.data)
+    //emit('login', res.data)
     // Optionally reset form
   } catch (err: any) {
     // handle validation errors from API (assumed structure)
@@ -69,7 +65,7 @@ async function submit() {
 </script>
 
 <template>
-  <form @submit.prevent="submit" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
+  <form @submit.prevent="onSubmit" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow">
     <h2 class="text-2xl font-semibold mb-4">Connexion</h2>
 
     <!-- Email -->
@@ -115,7 +111,7 @@ async function submit() {
         <span>Se connecter</span>
       </button>
 
-      <button type="button" class="text-sm text-gray-500" >Annuler</button>
+      <button type="button" class="text-sm text-gray-500">Annuler</button>
     </div>
   </form>
 </template>

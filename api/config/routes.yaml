@@ -3,11 +3,11 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-test:
-    path: /test
-    controller: App\Controller\TestController
 register:
     path: /register
     controller: App\Controller\AuthController::register
 login:
     path: /api/login
+contact:
+    path: /api/contact
+    controller: App\Controller\StoreContactController::index

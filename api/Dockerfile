@@ -4,7 +4,9 @@ RUN apt-get update && apt-get install -y \
     git unzip libzip-dev libicu-dev libonig-dev libxml2-dev \
     libpng-dev libjpeg-dev libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql intl zip gd opcache
+    && docker-php-ext-install pdo pdo_mysql intl zip gd opcache \
+    mkdir -p /var/www/html/public/uploads \
+    && chown -R www-data:www-data /var/www/html/public/uploads
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

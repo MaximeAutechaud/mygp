@@ -15,6 +15,7 @@ const auth = useAuth();
           </div>
 
           <div v-if="auth.isAuthenticated()" class="hidden md:flex space-x-6">
+            <RouterLink class="mx-12" to="/contact">Contact</RouterLink>
             <button type="button" @click="auth.logout()">
               Logout
             </button>

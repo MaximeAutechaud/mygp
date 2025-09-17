@@ -36,7 +36,7 @@ function validate(): boolean {
 }
 
 /** Submit */
-const onSubmit = async () => {
+const onSubmit = async (): Promise<void> => {
   try {
     await login(form.email, form.password)
     router.push('/contact')

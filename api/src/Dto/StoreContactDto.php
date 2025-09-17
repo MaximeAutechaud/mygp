@@ -15,7 +15,15 @@ class StoreContactDto
 
     public ?int $user_id = null;
 
-
-    public ?string $file = null;
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: [
+            'image/jpeg',
+            'image/png',
+            'application/pdf'
+        ],
+        mimeTypesMessage: 'Le fichier doit être une image (JPEG, PNG) ou un PDF et ne pas dépasser 2MB.'
+    )]
+    public ?UploadedFile $file = null;
 
 }

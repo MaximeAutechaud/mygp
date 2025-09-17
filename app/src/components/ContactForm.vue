@@ -69,7 +69,10 @@ function formatSize(bytes: number): string {
       />
     </div>
     <p v-if="file"> Vous avez joint : {{ file.name }}
-      <span :class="file.size > 2000000 ? 'text-red-500 bold' : 'text-green-700 underline'" >
+      <span v-if="file.size > 2000000" class="text-red-500 bold" >
+        ({{ formatSize(file.size) }}) <br>CE FICHIER EST TROP VOLUMINEUX
+      </span>
+      <span v-else class="text-green-700 underline" >
         ({{ formatSize(file.size) }})
       </span>
     </p>

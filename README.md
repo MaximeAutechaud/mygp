@@ -1,4 +1,5 @@
 
+
 Le projet est dockerisé avec 6 container : SF 7.3, Vue 3, nginx, mysql, phpmyadmin et Mailhog
 
 **Requirements** : docker-compose 3.9
@@ -21,6 +22,12 @@ Mailer : http://localhost:8025/ (mailhog)
 
 Une fois le build effectué pour relancer le projet `docker compose up -d`
 
+## Setup la DB
+Accéder au container back
+`docker-compose exec backend bash`
+Créer la DB 
+ `php bin/console d:m:m`
+
 ## **Stopper le projet**
 `docker-compose down`
 
@@ -28,6 +35,9 @@ Une fois le build effectué pour relancer le projet `docker compose up -d`
  `php bin/console check:users:daily`
 
 ## Disclaimers
-Je n'ai pas réussi à catch l'event de lexik `lexik_jwt_authentication.on_authentication_success` pour mettre le champ last_connection à jour et faire fonctionner la commande, j'ai pourtant essayé avec un EventListener et un EventSubscriber (qui lui est référencé dans le `bin/console debug:event-dispatcher` mais ne semble pas trigger. J'ai quand même laissé la logique qui aurait du s'appliquer si j'avais réussi à le catch (peut-être un problème de paramétrage j'ai pourtant suivi la doc...)
+**Event** : Je n'ai pas réussi à catch l'event de lexik `lexik_jwt_authentication.on_authentication_success` pour mettre le champ last_connection à jour et faire fonctionner la commande, j'ai pourtant essayé avec un EventListener et un EventSubscriber (qui lui est référencé dans le `bin/console debug:event-dispatcher` mais ne semble pas trigger. J'ai quand même laissé la logique qui aurait du s'appliquer si j'avais réussi à le catch (peut-être un problème de paramétrage j'ai pourtant suivi la doc...)
+
+**DB** : De même Doctrine m'a interdit de créer un champ nullable malgré mes multiples tentatives donc modifier le champ user.last_connection et le mettre nullable directement dans PMA avant d'essayer de créer un user.
+
 Je n'ai également pas fait de test car manque de temps et je n'ai pas réussi à mettre un environnement de test dockerisé en place.
 Le mailer est paramétré.

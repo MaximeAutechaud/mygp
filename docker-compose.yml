@@ -43,6 +43,11 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+        - "8025:8025"
+        - "1025:1025"
 
   mysql-db:
     image: mysql:8.0

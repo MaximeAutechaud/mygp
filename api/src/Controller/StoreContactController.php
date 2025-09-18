@@ -54,11 +54,11 @@ final class StoreContactController extends AbstractController
         $em->flush();
         $file->move($this->getParameter('upload_dir'), $file->getClientOriginalName());
 
-        //$mailerService->sendMessageEmail(
-        //    subject: $dto->subject,
-        //    body: $dto->body,
-        //    filePath: $this->getParameter('upload_dir') . "/" . $file->getClientOriginalName()
-        //);
+        $mailerService->sendMessageEmail(
+            subject: $dto->subject,
+            body: $dto->body,
+            filePath: $this->getParameter('upload_dir') . "/" . $file->getClientOriginalName()
+        );
 
         return $this->json([
             'message' => 'Contact bien enregistré',

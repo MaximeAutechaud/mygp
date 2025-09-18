@@ -21,8 +21,10 @@ async function submitContact() {
     formData.append('file', file.value);
   }
   try {
-    console.log(formData)
     api.post('/contact', formData)
+    subject.value = ''
+    body.value = ''
+    file.value = null
   } catch (err) {
     console.error(err)
   }

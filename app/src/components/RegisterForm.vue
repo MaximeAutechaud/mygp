@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import api from "@/lib/axios.ts";
 
 /**
  * Props:
@@ -81,7 +82,6 @@ const form = reactive({
 
 const errors = reactive<{ email?: string; password?: string }>({})
 const serverError = ref<string | null>(null)
-const loading = ref(false)
 const showPassword = ref(false)
 
 /** Basic client-side validation */
@@ -107,7 +107,6 @@ function validate(): boolean {
   return !errors.email && !errors.password
 }
 
-/** Styling helper */
 function inputClass(error?: string) {
   return [
     error ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-400',
@@ -115,35 +114,24 @@ function inputClass(error?: string) {
   ].join(' ')
 }
 
-/** Submit */
 async function submit() {
   if (!validate()) return
 
-  loading.value = true
   serverError.value = null
 
   try {
     const payload = {
-      headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       email: form.email,
       password: form.password
     }
-    const res = await axios.post(endpoint, payload)
-    // Expectation: API returns created user or token (adapt as needed)
+    const res = await api.post('/register', payload)
     emit('registered', res.data)
-    // Optionally reset form
     form.email = ''
     form.password = ''
   } catch (err: any) {
-    // handle validation errors from API (assumed structure)
     if (err.response?.data) {
       const data = err.response.data
-      // try common shapes
       if (data.errors) {
-        // { field: [msg] } style
         if (data.errors.email) errors.email = data.errors.email[0]
         if (data.errors.password) errors.password = data.errors.password[0]
       } else if (data.message) {

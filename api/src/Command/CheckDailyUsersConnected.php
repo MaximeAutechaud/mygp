@@ -24,7 +24,7 @@ class CheckDailyUsersConnected extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $usersCount = /*$this->userRepository->countLastConnectedUsers() ??*/ 43;
+        $usersCount = $this->userRepository->countLastConnectedUsers() ?? 43;
         $io->success(sprintf("Il y a %s users qui se sont connectés dans les dernières 24h!", $usersCount));
 
         return Command::SUCCESS;

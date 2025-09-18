@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $contacts;
 
+    #[ORM\Column]
+    private ?\DateTime $last_connection = null;
+
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
@@ -151,6 +154,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $contact->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastConnection(): ?\DateTime
+    {
+        return $this->last_connection;
+    }
+
+    public function setLastConnection(\DateTime $last_connection): static
+    {
+        $this->last_connection = $last_connection;
 
         return $this;
     }

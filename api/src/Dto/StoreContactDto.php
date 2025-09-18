@@ -2,6 +2,7 @@
 namespace App\Dto;
 
 use App\Validator\UniqueSubmissionPerHour;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueSubmissionPerHour]
 class StoreContactDto
@@ -22,7 +23,7 @@ class StoreContactDto
             'image/png',
             'application/pdf'
         ],
-        mimeTypesMessage: 'Le fichier doit être une image (JPEG, PNG) ou un PDF et ne pas dépasser 2MB.'
+        mimeTypesMessage: 'Le fichier doit être une image (JPEG, PNG) ou un PDF et ne pas dépasser 2Mo.'
     )]
     public ?UploadedFile $file = null;
 

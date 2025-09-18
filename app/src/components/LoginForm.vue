@@ -35,21 +35,23 @@ function validate(): boolean {
   return !errors.email && !errors.password
 }
 
+function inputClass(error?: string) {
+  return [
+    error ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-400',
+    'border'
+  ].join(' ')
+}
+
 /** Submit */
 const onSubmit = async (): Promise<void> => {
+  if (!validate()) return
   try {
     await login(form.email, form.password)
     router.push('/contact')
-    // Expectation: API returns created user or token (adapt as needed)
-    //emit('login', res.data)
-    // Optionally reset form
   } catch (err: any) {
-    // handle validation errors from API (assumed structure)
     if (err.response?.data) {
       const data = err.response.data
-      // try common shapes
       if (data.errors) {
-        // { field: [msg] } style
         if (data.errors.email) errors.email = data.errors.email[0]
         if (data.errors.password) errors.password = data.errors.password[0]
       } else if (data.message) {
@@ -75,6 +77,7 @@ const onSubmit = async (): Promise<void> => {
       type="email"
       placeholder="you@exemple.com"
       class="w-full px-3 py-2 rounded focus:outline-none"
+      :class="inputClass(errors.email)"
       autocomplete="email"
       required
     />
@@ -86,6 +89,7 @@ const onSubmit = async (): Promise<void> => {
         v-model="form.password"
         placeholder="8 caractères minimum"
         class="w-full px-3 py-2 rounded focus:outline-none pr-10"
+        :class="inputClass(errors.password)"
         autocomplete="new-password"
         required
       />
